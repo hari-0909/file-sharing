@@ -4,6 +4,7 @@ dotenv.config();
 const connectdb = require('./configs/mongodbconnection');
 const app = express();
 const port = process.env.PORT || 8081;
+const sendMail=require("./service/MailSender");
 //connect to mongodb
 connectdb();
 //basic middleware
@@ -12,6 +13,15 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("home url for file sharing app");
 });
+let emailOptions={
+  emailTo:"haribabuji60@gmail.com",
+  emailFrom:"haribabuji20@gmail.com",
+  link:"abcd",fileName:"abdc",size:1234
+}
+app.get("/send",(req,res)=>{
+  sendMail(emailOptions);
+  res.send("mail sent successfully");
+})
 // //404 handler
 // app.use((req,res,next)=>{
 //   res.status(404).json({
