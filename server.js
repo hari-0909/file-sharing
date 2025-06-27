@@ -1,10 +1,11 @@
 const express= require("express");
 const dotenv = require("dotenv");
 dotenv.config();
-const connectdb = require('./configs/mongodbconnection');
+const connectdb = require('./configs/mongodbconnection.js');
 const app = express();
 const port = process.env.PORT || 8081;
-const sendMail=require("./service/MailSender");
+const sendMail=require("./service/MailSender.js");
+const filesRouter= require("./routes/fileUploadRoute.js");
 //connect to mongodb
 connectdb();
 //basic middleware
@@ -22,6 +23,9 @@ app.get("/send",(req,res)=>{
   sendMail(emailOptions);
   res.send("mail sent successfully");
 })
+
+app.use('/',filesRouter);
+
 // //404 handler
 // app.use((req,res,next)=>{
 //   res.status(404).json({
