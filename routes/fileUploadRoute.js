@@ -28,15 +28,15 @@ router.post("/upload", upload.single('file'), async (req, res) => {
         // 3. Generate shortId
         const shortId = nanoid(6);
 
-        // 4. Prepare expiry (optional)
-        let expiryDate = null;
-        if (expiry !== 'never') {
-            const duration = parseInt(expiry); // expects number of days
-            if (!isNaN(duration)) {
-                expiryDate = new Date();
-                expiryDate.setDate(expiryDate.getDate() + duration);
-            }
-        }
+        // // 4. Prepare expiry
+        // let expiryDate = null;
+        // if (expiry !== 'never') {
+        //     const duration = parseInt(expiry); // expects number of days
+        //     if (!isNaN(duration)) {
+        //         expiryDate = new Date();
+        //         expiryDate.setDate(expiryDate.getDate() + duration);
+        //     }
+        // }
 
         // 5. Save to DB
         const createdFile = await File.create({
@@ -49,17 +49,17 @@ router.post("/upload", upload.single('file'), async (req, res) => {
             updatedAt: new Date()
         });
 
-        // 6. Optional: Send email with download link
-        if (emailTo && emailFrom) {
-            const downloadLink = `https://${req.get("host")}/api/${shortId}`;
-            await sendMail({
-                emailTo,
-                emailFrom,
-                link: downloadLink,
-                fileName: req.file.originalname,
-                size: req.file.size
-            });
-        }
+        // 6.Send email with download link
+        // if (emailTo && emailFrom) {
+        //     const downloadLink = `https://${req.get("host")}/api/${shortId}`;
+        //     await sendMail({
+        //         emailTo,
+        //         emailFrom,
+        //         link: downloadLink,
+        //         fileName: req.file.originalname,
+        //         size: req.file.size
+        //     });
+        // }
 
         // 7. Respond
         res.status(201).json({
